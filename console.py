@@ -130,9 +130,9 @@ class HBNBCommand(cmd.Cmd):
                     s[1] = s[1].replace('_', ' ')
                     setattr(new_instance, s[0], s[1][1:-1])
                 elif '.' in s[1]:
-                    setattr(new_instance, s[0], int(s[1]))
-                else:
                     setattr(new_instance, s[0], float(s[1]))
+                else:
+                    setattr(new_instance, s[0], int(s[1]))
 
         print(new_instance.id)
         new_instance.save()
