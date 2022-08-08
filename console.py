@@ -123,17 +123,19 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         new_instance = HBNBCommand.classes[my_list[0]]()
-        start_cmd = "update " + my_list[0] + ' ' + new_instance.id
         for i in range(1, len(my_list)):
-            try:
-                s = my_list[i].split('=')
-                s[1] = s[1].replace('_', ' ')
-                if (s[0] and s[1]):
-                    self.onecmd(start_cmd + ' ' + s[0] + ' ' + s[1])
-            except Exception:
-                continue
+            s = my_list[i].split('=')
+            if len(s) > 1:
+                if s[1][0] == '"':
+                    s[1] = s[1].replace('_', ' ')
+                    setattr(new_instance, s[0], s[1][1:-1])
+                elif '.' in s[1]:
+                    setattr(new_instance, s[0], int(s[1]))
+                else:
+                    setattr(new_instance, s[0], float(s[1]))
+
         print(new_instance.id)
-        storage.save()
+        new_instance.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -206,23 +208,22 @@ class HBNBCommand(cmd.Cmd):
         print("Destroys an individual instance of a class")
         print("[Usage]: destroy <className> <objectId>\n")
 
-    def do_all(self, args):
+    def do_all(self, line):
         """ Shows all objects, or all objects of a class"""
-        print_list = []
-
-        if args:
-            args = args.split(' ')[0]  # remove possible trailing args
-            if args not in HBNBCommand.classes:
-                print("** class doesn't exist **")
-                return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
+        my_list = line.split()
+        my_dict = storage.all()
+        list_value = []
+        if len(my_list) >= 1 and my_list[0] not in self.classes:
+            print("** class doesn't exist **")
+        elif len(my_list) == 0:
+            for value in my_dict.copy().values():
+                list_value.append(str(value))
+            print(list_value)
         else:
-            for k, v in storage._FileStorage__objects.items():
-                print_list.append(str(v))
-
-        print(print_list)
+            for value in my_dict.copy().values():
+                if value.__class__.__name__ == my_list[0]:
+                    list_value.append(str(value))
+            print(list_value)
 
     def help_all(self):
         """ Help information for the all command """
