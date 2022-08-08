@@ -6,6 +6,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from models.base_model import Base
 from models.city import City
 from models.state import State
+from models.user import User
 
 
 class DBStorage:
@@ -33,7 +34,7 @@ class DBStorage:
         """query on the current database session
         all objects depending of the class name"""
         newDict = {}
-        classes = {City, State}
+        classes = {City, State, User}
 
         if cls is None:
             for classe in classes:
