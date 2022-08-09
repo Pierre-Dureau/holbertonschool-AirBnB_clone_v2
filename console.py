@@ -3,7 +3,7 @@
 import cmd
 import sys
 from models.base_model import BaseModel
-from models.__init__ import storage
+from models import storage
 from models.user import User
 from models.place import Place
 from models.state import State
@@ -135,7 +135,8 @@ class HBNBCommand(cmd.Cmd):
                     setattr(new_instance, s[0], int(s[1]))
 
         print(new_instance.id)
-        new_instance.save()
+        storage.new(new_instance)
+        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -198,7 +199,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del(storage.all()[key])
+            storage.delete(storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -208,22 +209,23 @@ class HBNBCommand(cmd.Cmd):
         print("Destroys an individual instance of a class")
         print("[Usage]: destroy <className> <objectId>\n")
 
-    def do_all(self, line):
+    def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
-        my_list = line.split()
-        my_dict = storage.all()
-        list_value = []
-        if len(my_list) >= 1 and my_list[0] not in self.classes:
-            print("** class doesn't exist **")
-        elif len(my_list) == 0:
-            for value in my_dict.copy().values():
-                list_value.append(str(value))
-            print(list_value)
+        print_list = []
+
+        if args:
+            args = args.split(' ')[0]  # remove possible trailing args
+            if args not in HBNBCommand.classes:
+                print("** class doesn't exist **")
+                return
+            for k, v in storage.all().items():
+                if k.split('.')[0] == args:
+                    print_list.append(str(v))
         else:
-            for value in my_dict.copy().values():
-                if value.__class__.__name__ == my_list[0]:
-                    list_value.append(str(value))
-            print(list_value)
+            for k, v in storage.all().items():
+                print_list.append(str(v))
+
+        print(print_list)
 
     def help_all(self):
         """ Help information for the all command """
