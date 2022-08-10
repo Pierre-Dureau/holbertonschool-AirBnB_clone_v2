@@ -16,6 +16,7 @@ class test_db_storage(unittest.TestCase):
     def test_docstrings_in_console(self):
         """checking for docstrings"""
         self.assertIsNotNone(DBStorage.__doc__)
+        self.assertIsNotNone(DBStorage.__init__.__doc__)
         self.assertIsNotNone(DBStorage.all.__doc__)
         self.assertIsNotNone(DBStorage.close.__doc__)
         self.assertIsNotNone(DBStorage.save.__doc__)
