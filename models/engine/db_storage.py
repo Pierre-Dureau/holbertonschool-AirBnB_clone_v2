@@ -9,6 +9,7 @@ from models.state import State
 from models.user import User
 from models.place import Place
 from models.review import Review
+from models.amenity import Amenity
 
 
 class DBStorage:
@@ -36,7 +37,7 @@ class DBStorage:
         """query on the current database session
         all objects depending of the class name"""
         newDict = {}
-        classes = {City, State, User, Place, Review}
+        classes = {City, State, User, Place, Review, Amenity}
 
         if cls is None:
             for classe in classes:

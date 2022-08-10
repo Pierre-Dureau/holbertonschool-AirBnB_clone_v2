@@ -2,10 +2,19 @@
 """ Place Module for HBNB project """
 from models.base_model import BaseModel, Base
 from models.review import Review
-from sqlalchemy import Column, String, Integer, Float, ForeignKey
+from models.amenity import Amenity
+from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
 from os import getenv
 from sqlalchemy.orm import relationship
 import models
+
+
+place_amenity = Table('place_amenity', Base.metadata,
+                      Column('place_id', String(60), ForeignKey('places.id'),
+                             primary_key=True, nullable=False),
+                      Column('amenity_id', String(60),
+                             ForeignKey('amenities.id'),
+                             primary_key=True, nullable=False))
 
 
 class Place(BaseModel, Base):
@@ -26,6 +35,8 @@ class Place(BaseModel, Base):
     if getenv('HBNB_TYPE_STORAGE') == 'db':
         reviews = relationship("Review", cascade="all, delete",
                                backref="place")
+        amenities = relationship('Amenity', secondary='place_amenity',
+                                 viewonly=False)
     else:
         @property
         def reviews(self):
@@ -38,3 +49,18 @@ class Place(BaseModel, Base):
                 if value.place_id == self.id:
                     reviews.append(value)
             return reviews
+
+        @property
+        def amenities(self):
+            """ Get Linked Amenities"""
+            amenitylist = []
+            for amenity in list(models.storage.all(Amenity).values()):
+                if amenity.id in self.amenity_ids:
+                    amenitylist.append(amenity)
+            return amenitylist
+
+        @amenities.setter
+        def amenities(self, value):
+            """Setter attribute amenities"""
+            if type(value) == Amenity:
+                self.amenity_ids.append(value.id)
