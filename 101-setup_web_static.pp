@@ -32,6 +32,7 @@ exec { 'sed':
   command => '/usr/bin/sed -i "47i location /hbnb_static {alias /data/web_static/current/; }" /etc/nginx/sites-available/default'
 }
 
-exec { 'restart':
-  command => '/usr/sbin/service nginx restart'
+service { 'nginx':
+  ensure  => running,
+  require => Package['nginx'],
 }
