@@ -7,6 +7,7 @@ from os.path import exists
 env.hosts = ['54.173.31.188', '3.80.45.187']
 
 
+@runs_once
 def do_pack():
     """Pack all web_static files"""
     local("mkdir -p versions")
@@ -19,7 +20,6 @@ def do_pack():
         return None
 
 
-@runs_once
 def do_deploy(archive_path):
     """deploy an archive to your web servers"""
     if exists(archive_path) is False:
