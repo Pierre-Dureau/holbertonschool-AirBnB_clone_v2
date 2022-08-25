@@ -1,11 +1,14 @@
 # Web server preparation with puppet
 
 exec { 'update':
-  command => '/usr/bin/apt-get update'
+  command => 'apt-get update',
+  path    => '/usr/bin',
 }
 
-exec { 'install':
-  command => '/usr/bin/apt-get -y install nginx'
+package { 'nginx':
+  ensure  => present,
+  name    => 'nginx',
+  require => Exec['update'],
 }
 
 exec { 'mkdir':
