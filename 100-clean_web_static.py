@@ -86,9 +86,6 @@ def do_clean(number=0):
 
     files = run("ls -1t /data/web_static/releases")
     files_list = files.split('\n')
-    i = 0
-    for files in files_list:
-        i += 1
-        if i == 1 or files == 'test':
-            continue
-        run("rm -rf /data/web_static/releases/{}".format(files))
+    size = len(files_list)
+    for i in range(n, size):
+        run("rm -rf /data/web_static/releases/{}".format(files_list[i]))
