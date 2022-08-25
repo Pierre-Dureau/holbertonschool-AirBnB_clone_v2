@@ -29,7 +29,7 @@ def do_deploy(archive_path):
     file_name = file_tgz.split('.')[0]
     p_rls = '/data/web_static/releases/'
 
-    cmd = put("version/{}", "/tmp/{}".format(file_tgz, file_tgz))
+    cmd = put("versions/{}", "/tmp/{}".format(file_tgz, file_tgz))
     if cmd.failed is True:
         return False
 
