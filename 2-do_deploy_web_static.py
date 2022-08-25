@@ -1,10 +1,11 @@
 #!/usr/bin/python3
 """Fabric file for packaging"""
-from fabric.operations import *
+from fabric.api import *
 from datetime import datetime
 from os.path import exists
 
 env.hosts = ['54.173.31.188', '3.80.45.187']
+
 
 def do_pack():
     """Pack all web_static files"""
@@ -18,6 +19,7 @@ def do_pack():
         return None
 
 
+@runs_once
 def do_deploy(archive_path):
     """deploy an archive to your web servers"""
     if exists(archive_path) is False:
@@ -27,7 +29,7 @@ def do_deploy(archive_path):
     file_name = file_tgz.split('.')[0]
     p_rls = '/data/web_static/releases/'
 
-    cmd = put(str(archive_path), "/tmp/{}".format(file_tgz))
+    cmd = put("version/{}", "/tmp/{}".format(file_tgz, file_tgz))
     if cmd.failed is True:
         return False
 
