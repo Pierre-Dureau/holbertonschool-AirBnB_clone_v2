@@ -1,46 +1,37 @@
 # Web server preparation with puppet
 
 exec { 'update':
-  command => '/usr/bin/apt-get update',
+  command => '/usr/bin/apt-get update'
 }
 
-package { 'nginx':
-  ensure  => 'present',
-  name    => 'nginx',
-  require => Exec['update'],
+exec { 'install':
+  command => '/usr/bin/apt-get -y install nginx'
 }
 
 exec { 'mkdir':
-  command => 'mkdir -p /data/web_static/releases/test/'
-  path => '/usr/bin'
+  command => '/usr/bin/mkdir -p /data/web_static/releases/test/'
 }
 
 exec { 'mkdir2':
-  command => 'mkdir -p /data/web_static/shared/'
-  path => '/usr/bin'
+  command => '/usr/bin/mkdir -p /data/web_static/shared/'
 }
 
 exec { 'echo':
-  command => 'echo "Holberton School" > /data/web_static/releases/test/index.html'
-  path => '/usr/bin'
+  command => '/usr/bin/echo "Holberton School" > /data/web_static/releases/test/index.html'
 }
 
 exec { 'ln':
-  command => 'ln -sf /data/web_static/releases/test/ /data/web_static/current'
-  path => '/usr/bin'
+  command => '/usr/bin/ln -sf /data/web_static/releases/test/ /data/web_static/current'
 }
 
 exec { 'chown':
-  command => 'chown -R ubuntu:ubuntu /data/'
-  path => '/usr/bin'
+  command => '/usr/bin/chown -R ubuntu:ubuntu /data/'
 }
 
 exec { 'sed':
-  command => 'sed -i '47i\\tlocation /hbnb_static {\n\t\talias /data/web_static/current/;\n\t\tautoindex off;\n\t}' /etc/nginx/sites-available/default'
-  path => '/usr/bin'
+  command => '/usr/bin/sed -i "47i location /hbnb_static {alias /data/web_static/current/; }" /etc/nginx/sites-available/default'
 }
 
-service { 'nginx':
-  ensure  => running,
-  require => Package['nginx'],
+exec { 'restart':
+  command => '/usr/sbin/service nginx restart'
 }
