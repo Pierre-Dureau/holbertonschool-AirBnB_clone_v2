@@ -88,7 +88,7 @@ def do_clean(number=0):
     files_list = files.split('\n')
     i = 0
     for files in files_list:
-        if i == 0 or files == 'test':
+        i += 1
+        if i == 1 or files == 'test':
             continue
         run("rm -rf /data/web_static/releases/{}".format(files))
-        i += 1
