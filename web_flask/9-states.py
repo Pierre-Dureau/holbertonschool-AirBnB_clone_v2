@@ -7,11 +7,23 @@ from models.state import State
 app = Flask(__name__)
 
 
-@app.route('/states_list', strict_slashes=False)
-def states_list():
+@app.route('/states', strict_slashes=False)
+def states():
     """list all states"""
     states = storage.all(State).values()
-    return render_template('7-states_list.html', states=states)
+    return render_template('9-states.html', states=states)
+
+
+@app.route('/states/<id>', strict_slashes=False)
+def state_id(id):
+    """list a specific state with their cities"""
+    states = storage.all(State).values()
+    state = None
+    for stat in states:
+        if (stat.id == id):
+            state = stat
+            break
+    return render_template('9-states.html', state=state)
 
 
 @app.teardown_appcontext
