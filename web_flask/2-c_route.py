@@ -21,7 +21,7 @@ def hbnb():
 def c_message(message):
     """Print something with a variable"""
     message = message.replace('_', ' ')
-    return f"C {escape(message)}"
+    return "C {}".format(escape(message))
 
 
 if __name__ == "__main__":
