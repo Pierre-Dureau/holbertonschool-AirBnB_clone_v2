@@ -21,7 +21,7 @@ def hbnb():
 def c_msg(msg):
     """Print something"""
     msg = msg.replace('_', ' ')
-    return f"C {escape(msg)}"
+    return "C {}".format(escape(msg))
 
 
 @app.route('/python/', strict_slashes=False, defaults={'msg': 'is_cool'})
@@ -29,7 +29,7 @@ def c_msg(msg):
 def python_msg(msg="is cool"):
     """Print something"""
     msg = msg.replace('_', ' ')
-    return f"Python {escape(msg)}"
+    return "Python {}".format(escape(msg))
 
 
 if __name__ == "__main__":
