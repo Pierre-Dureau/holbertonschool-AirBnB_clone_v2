@@ -17,11 +17,11 @@ def hbnb():
     return "HBNB"
 
 
-@app.route('/c/<message>', strict_slashes=False)
-def c_message(message):
+@app.route('/c/<text>', strict_slashes=False)
+def c_text(text):
     """Print something with a variable"""
-    message = message.replace('_', ' ')
-    return "C {}".format(escape(message))
+    text = text.replace('_', ' ')
+    return "C {}".format(escape(text))
 
 
 if __name__ == "__main__":

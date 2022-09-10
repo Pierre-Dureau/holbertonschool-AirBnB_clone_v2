@@ -17,19 +17,19 @@ def hbnb():
     return "HBNB"
 
 
-@app.route('/c/<msg>', strict_slashes=False)
-def c_msg(msg):
+@app.route('/c/<text>', strict_slashes=False)
+def c_text(text):
     """Print something"""
-    msg = msg.replace('_', ' ')
-    return "C {}".format(escape(msg))
+    text = text.replace('_', ' ')
+    return "C {}".format(escape(text))
 
 
-@app.route('/python/', strict_slashes=False, defaults={'msg': 'is_cool'})
-@app.route('/python/<msg>', strict_slashes=False)
-def python_msg(msg="is cool"):
+@app.route('/python/', strict_slashes=False)
+@app.route('/python/<text>', strict_slashes=False)
+def python_text(text="is cool"):
     """Print something"""
-    msg = msg.replace('_', ' ')
-    return "Python {}".format(escape(msg))
+    text = text.replace('_', ' ')
+    return "Python {}".format(escape(text))
 
 
 if __name__ == "__main__":

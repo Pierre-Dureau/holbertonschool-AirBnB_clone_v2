@@ -23,21 +23,21 @@ def hbnb():
 def c_text(text):
     """Print something"""
     text = text.replace('_', ' ')
-    return f"C {escape(text)}"
+    return "C {}".format(escape(text))
 
 
-@app.route('/python/', strict_slashes=False, defaults={'text': 'is_cool'})
+@app.route('/python/', strict_slashes=False)
 @app.route('/python/<text>', strict_slashes=False)
 def python_text(text="is cool"):
     """Print something"""
     text = text.replace('_', ' ')
-    return f"Python {escape(text)}"
+    return "Python {}".format(escape(text))
 
 
 @app.route('/number/<int:n>', strict_slashes=False)
 def number(n):
     """Print something"""
-    return f"{n} is a number"
+    return "{} is a number".format(n)
 
 
 @app.route('/number_template/<int:n>', strict_slashes=False)
